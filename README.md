@@ -120,3 +120,6 @@ store-intelligence/
 dashboard (repo root: src/)  React + Vite + Tailwind UI
 docker-compose.yml           backend + pipeline + dashboard
 ```
+
+## 7.Video:-
+https://screenrec.com/share/RYGMO9XKV4
