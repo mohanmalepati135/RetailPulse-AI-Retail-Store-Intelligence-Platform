@@ -1,0 +1,12 @@
+{
+  "frame": { "width": 1280, "height": 720 },
+  "entry_line": { "y": 620, "direction": "vertical_cross" },
+  "zones": [
+    { "id": "Z1", "name": "ENTRY",     "x1": 0,    "y1": 560, "x2": 1280, "y2": 720 },
+    { "id": "Z2", "name": "SKINCARE",  "x1": 0,    "y1": 0,   "x2": 420,  "y2": 360 },
+    { "id": "Z3", "name": "MAKEUP",    "x1": 420,  "y1": 0,   "x2": 860,  "y2": 360 },
+    { "id": "Z4", "name": "FRAGRANCE", "x1": 860,  "y1": 0,   "x2": 1280, "y2": 360 },
+    { "id": "Z5", "name": "BILLING",   "x1": 860,  "y1": 360, "x2": 1280, "y2": 560 },
+    { "id": "Z6", "name": "AISLE",     "x1": 0,    "y1": 360, "x2": 860,  "y2": 560 }
+  ]
+}

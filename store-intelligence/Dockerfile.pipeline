@@ -1,0 +1,16 @@
+FROM python:3.11-slim
+
+# OpenCV runtime deps
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    libgl1 libglib2.0-0 && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+
+COPY requirements-cv.txt .
+RUN pip install --no-cache-dir -r requirements-cv.txt
+
+COPY pipeline ./pipeline
+COPY data ./data
+
+# Waits for the backend, then processes one clip (or synthetic fallback).
+CMD ["python", "-m", "pipeline.run_pipeline", "--store", "STR-001"]

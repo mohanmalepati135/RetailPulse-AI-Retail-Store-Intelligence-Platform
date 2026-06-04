@@ -1,0 +1,51 @@
+# RetailPulse AI — full-stack retail intelligence platform.
+# `docker compose up` brings the whole system to a working state with zero manual steps:
+#   backend  → init DB, auto-seed events, load transactions, serve REST + WS
+#   pipeline → process one CCTV clip (or synthetic fallback) → POST /events/ingest
+#   dashboard→ build + serve the React UI, consuming the real backend
+
+services:
+  backend:
+    build:
+      context: ./store-intelligence
+      dockerfile: Dockerfile.backend
+    container_name: retailpulse-backend
+    ports:
+      - "8000:8000"
+    environment:
+      RETAILPULSE_ENVIRONMENT: production
+      RETAILPULSE_DATABASE_URL: sqlite:////data/retailpulse.db
+    volumes:
+      - retailpulse-db:/data
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  pipeline:
+    build:
+      context: ./store-intelligence
+      dockerfile: Dockerfile.pipeline
+    container_name: retailpulse-pipeline
+    depends_on:
+      backend:
+        condition: service_healthy
+    environment:
+      RETAILPULSE_API_URL: http://backend:8000
+    restart: "no"
+
+  dashboard:
+    build:
+      context: .
+      dockerfile: store-intelligence/Dockerfile.dashboard
+      args:
+        VITE_API_URL: http://localhost:8000
+    container_name: retailpulse-dashboard
+    ports:
+      - "5173:80"
+    depends_on:
+      - backend
+
+volumes:
+  retailpulse-db:
